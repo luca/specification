@@ -2,96 +2,7 @@
 
 This section describes some paradigmatic stakeholder journeys (story)
 
-## User state  ##  {#user-state-machine}
-
-There are five user state that MUST be considered inside SafeTogether application : 
-
-: U
-:: unknown
-: N
-:: negative
-: Q
-:: quarantined
-: S
-:: suspended
-: I
-:: immune
-
-
-The state **Unknown** says that the system knows nothing about her health status. 
-State **Negative** materializes the negative outcome of a swab test, while 
-**Quarantined** (at home) means that the outcome was positive, and the citizen is now quarantined. 
-if the heath conditions worsen, the citizen is hospitalized, and quarantine **Suspended**. When the patient recovers, 
-she becomes **Immune**.
-
-### Virtual state ### {#virtual-state}
-
-SafeTogether purposes some other *virtual state* **MAY** be introduced:
-
-- some SafeTogether application **MAY** consider the additional virtial state **positive** (P)  defined as  the union of **quarantined** and **suspended** state.
-- some SafeTogether stories MAY consider the additional state **pending** (D)  to qualify the  "Unknown" state after the execution of a medical test but before
-    the test result. For SafeTogether purposes the **Pending** virtual state **MUST** be considered equivalent to the **Unknown** state.
-
-Issue: can assume that an immune person doesn’t carrying the virus? How about behaviour re-safety in cleaning/hygiene?
-
-
-### state privacy ###  {#state-privacy}
-
-
-Note: The above table  is informative only <img src="tab1.png"/>
-
-Privacy and rights:
-
-: Citizens **MUST** have *view only* rights on their state
-:: citizens can view their status but they are not allowed to change it.
-: Institutional Forces (Police, etc) – **MAY** have *view only* rights citizen's state
-:: Policeman who needs to check circulation rights and citizen status to regulateand enforce government directives. 	
-: SanitaryPersonnel (Doctors, Pharmacists, Nurses, etc) – *MAY** have view and edit right
-:: Authorized operators  can change the “Status” of a citizen based on medical evidence.
-: Volunteers (Immune Citizens) – other citizen can have *view only* rights
-:: Citizens that have recovered, are immune and want to help during the crisis
-
-
-
-
-## Stories by application domain ## {#index-by-domain}
-
-Here is a crosss-reference index between stories and application domains:
-
-**Tracing***:
-
-Issue(10): add stories about contact tracing domain.
-
-**Quarantine**:
-
-- [[#US01]],
-- [[#US02]],
-- [[#US03]],
-- [[#US04]],
-- [[#US05]],
-- [[#US06]],
-- [[#US07]]
-
-
-This diagram summarizes the state transition diagram for a citizen can go through while part of the SafeTogether system. 
-
-<img src="safeTogetherCitizen.svg" width="100%"/>
-
-**Shielding**:
-
-- [[#US08]],
-- [[#US09]],
-- [[#US10]],
-- [[#US11]],
-- [[#US12]],
-- [[#US13]],
-- [[#US14]],
-- [[#US15]]
-
-Issue(11): check the cross index
-
-
-## US01: Anne is Tested (Swab Test) ## {#US01}
+## US01: Anne is positive to the Swab Test ## {#US01}
 
 **Actors:**
 
@@ -101,10 +12,18 @@ Issue(11): check the cross index
 **Preconditions:**
 
 Anne's state is unknown
+Giovanni has produced the medical certificate with the patient's state of health and digitally signed it 
+using the computer procedures of the hospital in which he operates and stores it digitally in the health repositories. 
+In addition, this report must be sent in encrypted mode to the patient.
+The medical certificate must be saved in the device inside the App.
+Giovanni has the task of recording the biometric data of the patients.
+
+Issue: no biometric data MUST BE RECORDED in any case. We can use keyless method to avoid this.
+
 
 **Postcondition:**
 
-Anne’s state is quarantined or negative.
+Anne’s state is quarantined.
 
 **Story:**
 
@@ -113,7 +32,9 @@ Giovanni asks Anne to install the *Mobile App*. The *Mobile App*
 requests Anne to show her face, then she is enrolled in the system. The
 app also creates a unique COC_ID, which is associated with Anne’s
 information. As a result, the app presents a QR code on the screen.
-Giovanni starts the operator app, scans the QR code, and
+Giovanni is in charge of collecting the biometric data of each patient for recognition and subsequent association of 
+the medical certificate in which the state of health is present.
+Giovanni starts  completes the registration starts the operator app, scans the QR code, and
 enters Anne’s codice fiscale and phone number in the operator
 app. At this point, the *Mobile App* shows a single-button
 interface that, when pressed, records the current location and sets
@@ -131,9 +52,11 @@ After some time, the result of the test is back. Giovanni enters the
 result in the operator app, which also notifies Anne’s
 *Mobile App*, as well as the authorities.
 
-- if the test result is positive, the app enters in quarantine mode (see [[#US02]])
-- if the test result is negative, Anne is notified via the mobile app.
+Issue(29): story mistsmatch with quarnatine app video (QR codes and personas)
 
+Issue: Giovanni is NOT in charge of collecting any biometric data. No bieometric data must be stored under institutional  control
+
+Issue: why we need to store certificate on Anne device?
 
 ## US02 - Jack Confirms His Location -- Enforce Quarantine ## {#US02}
 
@@ -322,12 +245,17 @@ The operator app checks Marco’s state (including the expiration date if the im
 **Preconditions:**
 
 Marco’s state is immune
-
+Marco must have already been recognized by Giovanni (see ISSUE 1) and must have on board his device the medical certificate 
+in which Giovanni reported his immunity.
 **Story:**
 
 Marco goes to Walter at
 the civil defence and volunteers to join the shielding program for
-at-risk individuals. Marco proves that he is immune as described in
+at-risk individuals. The recognition is done by comparing the biopmetric data in 
+the blockchain and the Hash of the report saved inside Marco's device. 
+Only the merging of all data associated with Marco gives access to the report 
+(biometric data, hash of the report and user id).
+Marco proves that he is immune as described in
 [[#US08]]. Walter registers Marco’s information, including his COC_ID and
 photo, to protezione civile’s system. Protezione civile’s system
 uses the COC backend to send a notification to Marco's mobile
@@ -335,6 +263,7 @@ app. Marco authenticates in front of Walter, and the app records
 Marco as a volunteer.
 
 
+Issue: No biometric data must be stored. Can we use keyless instead? Do we need a blockchain?
 
 
 ## US10 - Marco’s Immunity Expires ## {#US10}

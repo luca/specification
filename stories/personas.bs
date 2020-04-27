@@ -2,7 +2,12 @@ Personas {#personas}
 =====================
 
 This section descrbes the *personas*.
-A  persona, is a fictional character created to represent a user type that might use a SafetTogether application in a similar way.
+A  persona, is a fictional character created to represent a SafetTogether stakeholder.
+
+The SafeTogether specification distinguishes two kinds of personas:
+
+- who are interested in implementing SafeTogether specification (Implementers)
+- who are are using SafeTogether application
 
 
 
@@ -271,7 +276,7 @@ She fears that she might lose her job in case travel across Europe is restricted
 Some countries may deny her access, even though she could be immune and therefore not a threat.
 
 
-### Anne a Regular Citizenr ### {#Anne}
+### Anne a Regular Citizen ### {#Anne}
 
 <img src="images/Anne.png" width="200" />
 
